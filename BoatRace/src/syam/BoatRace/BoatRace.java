@@ -13,13 +13,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import syam.BoatRace.Command.BaseCommand;
 import syam.BoatRace.Command.HelpCommand;
+import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
 
 
 public class BoatRace extends JavaPlugin{
 	/**
 	 * TODO:
-	 * todo here
+	 * w.spawn(spawnBoat, Boat.class);
 	 *
 	 */
 	// ** Logger **
@@ -27,7 +28,8 @@ public class BoatRace extends JavaPlugin{
 	public final static String logPrefix = "[BoatRace] ";
 	public final static String msgPrefix = "&6[BoatRace] &f";
 
-	// ** Listener **
+	// ** Listeners **
+	private final BRVehicleListener vehicleListener = new BRVehicleListener(this);
 
 	// ** Commands **
 	public static List<BaseCommand> commands = new ArrayList<BaseCommand>();
@@ -63,6 +65,9 @@ public class BoatRace extends JavaPlugin{
 		if (!pm.isPluginEnabled(this)){
 			return;
 		}
+
+		// Regist Listeners
+		pm.registerEvents(vehicleListener, this);
 
 		// コマンド登録
 		registerCommands();

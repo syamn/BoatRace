@@ -10,13 +10,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.ItemStack;
 
 import syam.BoatRace.BoatRace;
 
 
-public class BRVehicleListener{
+public class BRVehicleListener implements Listener{
 	// Logger
 	public static final Logger log = BoatRace.log;
 	private static final String logPrefix = BoatRace.logPrefix;
@@ -38,9 +39,9 @@ public class BRVehicleListener{
 
 		// 設定とインスタンスチェック
 		if (plugin.getConfigs().dropBoat && vehicle instanceof Boat){
-			ItemStack item = new ItemStack(Material.BOAT);
+			ItemStack boatStack = new ItemStack(Material.BOAT);
 			Location loc = vehicle.getLocation();
-			loc.getWorld().dropItem(loc, item);
+			loc.getWorld().dropItemNaturally(loc, boatStack);
 			event.setCancelled(true);
 			vehicle.remove();
 		}
