@@ -1,7 +1,7 @@
-package BoatRace.Command;
+package syam.BoatRace.Command;
 
-import BoatRace.BoatRace;
-import BoatRace.Util.Actions;
+import syam.BoatRace.BoatRace;
+import syam.BoatRace.Util.Actions;
 
 public class HelpCommand extends BaseCommand {
 	public HelpCommand(){

@@ -1,4 +1,4 @@
-package BoatRace;
+package syam.BoatRace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +11,10 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import BoatRace.Command.BaseCommand;
-import BoatRace.Command.HelpCommand;
-import BoatRace.Race.Race;
+import syam.BoatRace.Command.BaseCommand;
+import syam.BoatRace.Command.HelpCommand;
+import syam.BoatRace.Race.Race;
+
 
 public class BoatRace extends JavaPlugin{
 	/**

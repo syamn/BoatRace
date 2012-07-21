@@ -1,4 +1,4 @@
-package BoatRace.Util;
+package syam.BoatRace.Util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,7 +19,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import BoatRace.BoatRace;
+import syam.BoatRace.BoatRace;
+
 
 public class Actions {
 	// Logger

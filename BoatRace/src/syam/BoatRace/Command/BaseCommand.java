@@ -1,4 +1,4 @@
-package BoatRace.Command;
+package syam.BoatRace.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,9 @@ import java.util.logging.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import BoatRace.BoatRace;
-import BoatRace.Util.Actions;
+import syam.BoatRace.BoatRace;
+import syam.BoatRace.Util.Actions;
+
 
 public abstract class BaseCommand{
 	// Logger

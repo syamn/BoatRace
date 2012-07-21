@@ -1,4 +1,4 @@
-package BoatRace;
+package syam.BoatRace;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -46,6 +46,7 @@ public class ConfigurationManager{
 	/* Games Configs */
 	public int startCountdownInSec = new Integer(10);
 	public boolean deathWhenLogout = new Boolean(true);
+	public boolean dropBoat = new Boolean(true);
 	public boolean disablePVP = new Boolean(false);
 	public List<String> disableCommands = defaultDisableCommands;
 	/* Logging Configs */
@@ -80,8 +81,9 @@ public class ConfigurationManager{
 		isProtected = plugin.getConfig().getBoolean("WorldProtect", true);
 		/* Games Configs */
 		startCountdownInSec = plugin.getConfig().getInt("StartCountdownInSec", 10);
-		deathWhenLogout = plugin.getConfig().getBoolean("DeathWhenLogout", true);
-		disablePVP = plugin.getConfig().getBoolean("DisableTeamPVP", true);
+		deathWhenLogout = plugin.getConfig().getBoolean("DeathWhenLogout", false);
+		disablePVP = plugin.getConfig().getBoolean("DisablePVP", false);
+		dropBoat = plugin.getConfig().getBoolean("DropBoat", true);
 		disableCommands = plugin.getConfig().getStringList("DisableCommands");
 		/* Logging Configs */
 		detailDirectory = plugin.getConfig().getString("DetailDirectory", defaultDetailDirectory);

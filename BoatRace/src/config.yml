@@ -21,6 +21,8 @@ StartCountdownInSec: 10
 DeathWhenLogout: true
 # If it true, PVP damage will be disabled
 DisablePVP: false
+# If it true, Drop boat directory when destroying the boat
+DropBoat: true
 # Lists of disabled commands during the game
 DisableCommands:
 - /spawn
