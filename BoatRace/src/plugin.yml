@@ -1,0 +1,36 @@
+##  Plugin Information  ##
+name: BoatRace
+version: 0.1
+main: syam.BoatRace.BoatRace
+description: FlagMatch Gaming Plugin for SakuraServer
+website: http://sakura-server.net/
+softdepend: [Vault, WorldEdit]
+##  Original Author     ##
+author: syam
+commands:
+    flag:
+      usage: /boatrace - to see the help
+      aliases: [br, boat]
+      description: To see the BoatRace help.
+permissions:
+    boat:
+        default: op
+        description: Allow join the game
+    boat.admin:
+        default: op
+        description: Allow all of administer commands
+    boat.admin.sign:
+        default: op
+        description: Allow place FlagGame sign
+    boat.admin.reload:
+        default: op
+        description: Allow reload configuration
+    boat.admin.save:
+        default: op
+        description: Allow save map data
+    boat.ignoreWorldProtect:
+        default: op
+        description: Allow Break/Place protected game-world
+    boat.ignoreInteractEvent:
+        default: op
+        description: Allow Open/Close all doors/chests in game-world

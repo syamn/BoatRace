@@ -1,0 +1,45 @@
+# BoatRace Configuration file!
+# @author syamn <admin@sakura-server.net>
+# github: https://github.com/syamn/BoatRace
+
+#==================#
+#   Basic Config   #
+#==================#
+# ItemID, used to selecting Block.
+ToolID: 269
+# FlagGame World
+WorldName: 'race'
+# If it true, Gameworld will be protected by player
+WorldProtect: true
+
+#==================#
+#   Games Config   #
+#==================#
+# Countdown time(sec) when starting the game
+StartCountdownInSec: 10
+# If it true, Kills player when logout during the game
+DeathWhenLogout: true
+# If it true, PVP damage will be disabled
+DisablePVP: false
+# Lists of disabled commands during the game
+DisableCommands:
+- /spawn
+- /home
+- /sethome
+- /warp
+- /tp
+- /pot
+- /flymode
+- /fm
+
+#====================#
+#   Logging Config   #
+#====================#
+# DetailLogDirectory
+DetailDirectory: plugins/BoatRace/detail/
+
+#==================#
+#   DO NOT TOUCH   #
+#==================#
+# Do not touch this option! It is a check if you are running the recent configuration version
+Version: 0.1
