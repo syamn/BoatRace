@@ -1,0 +1,4 @@
+BoatRace
+========
+
+CraftBukkit plugin
