@@ -1,6 +1,7 @@
 package syam.BoatRace.Race;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,14 @@ public class RaceFileManager{
 			confFile.set("StartPoints", startList); // スタート地点
 			confFile.set("GoalRegion", convertCuboidToString(race.getGoalZone())); // ゴールエリア
 			confFile.set("Checkpoints", convertCpSetToList(race.getCheckpoints())); // チェックポイント
+
+			// 保存
+			try{
+				confFile.save(file);
+			}catch(IOException ex){
+				log.warning(logPrefix+ "Couldn't write Game data!");
+				ex.printStackTrace();
+			}
 		}
 	}
 
@@ -80,7 +89,9 @@ public class RaceFileManager{
 				race.setTimeLimit(confFile.getInt("TimeLimit", 60 * 10));
 
 				race.setStartPos(convertStartListToSet(confFile.getStringList("StartPoints"))); // スタート地点
-				race.setGoal(convertStringToCuboid(confFile.getString("GoalRegion"))); // ゴールエリア
+				Cuboid goalRegion = convertStringToCuboid(confFile.getString("GoalRegion"));
+				if (goalRegion != null)
+					race.setGoal(goalRegion); // ゴールエリア
 				race.setCheckpoints(convertCpListToSet(confFile.getStringList("Checkpoints"))); // チェックポイント
 
 				log.info(logPrefix + "Loaded Race: "+file.getName()+" ("+name+")");
@@ -136,6 +147,10 @@ public class RaceFileManager{
 
  	// ゴールエリア
  	private String convertCuboidToString(Cuboid region){
+ 		// Fixes NPE
+ 		if (region == null)
+ 			return null;
+
  		String ret;
 
  		// 座標を取得する
@@ -148,6 +163,10 @@ public class RaceFileManager{
  		return ret;
  	}
  	private Cuboid convertStringToCuboid(String s){
+ 		// Fixes NPE
+ 		if (s == null || s.length() <= 0)
+ 			return null;
+
  		String[] data;
  		String[] coord;
  		Location pos1, pos2;
