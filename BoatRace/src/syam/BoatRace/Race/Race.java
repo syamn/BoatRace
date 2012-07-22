@@ -9,10 +9,13 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 import syam.BoatRace.BoatRace;
+import syam.BoatRace.Enum.PlayerStatus;
 import syam.BoatRace.Util.Actions;
 import syam.BoatRace.Util.Cuboid;
 
@@ -41,7 +44,7 @@ public class Race{
 	private int entryFee = 100; // エントリー料
 
 	// 参加プレイヤー
-	private HashMap<String, BRBoat> players = new HashMap<String, BRBoat>();
+	private HashMap<String, PlayerStatus> players = new HashMap<String, PlayerStatus>();
 	// 開始ポジション :複数必要
 	private Set<Location> startPos = new HashSet<Location>();
 	// ゴールゾーン :1ゾーン
@@ -71,6 +74,8 @@ public class Race{
 	 * このレースを初期化する
 	 */
 	public void init(){
+		GameID = null;
+
 		// プレイヤーリスト初期化
 		players.clear();
 
@@ -142,21 +147,18 @@ public class Race{
 		// チェストなどのロールバックをここで
 		// rollabckChests();
 
-		// 開始
-		timer();
-		started = true;
-
-		// アナウンス
-		Actions.broadcastMessage(msgPrefix+"&2ボートレース'&6"+getName()+"&2'が始まりました！");
-		Actions.broadcastMessage(msgPrefix+"&f &a制限時間: &f"+Actions.getTimeString(timeLimitInSeconds)+"&f | &b参加者: &f"+players.size()+"&b人");
+		// 場所移動
+		tpStartPos();
 
 		// 参加者を回す
 		for (String name : players.keySet()){
 			if (name == null) continue;
 			Player player = Bukkit.getPlayer(name);
-			// オフラインプレイヤーをスキップ
-			if (player == null || !player.isOnline())
+			// オフラインプレイヤーは参加させない
+			if (player == null || !player.isOnline()){
+				players.remove(name);
 				continue;
+			}
 
 			// アイテムクリア
 			player.getInventory().clear();
@@ -171,7 +173,18 @@ public class Race{
 
 			// ポーション削除
 			clearPot(player);
+
+			// 参加状態をRUNNINGに変更
+			players.put(name, PlayerStatus.RUNNING);
 		}
+
+		// 開始
+		timer();
+		started = true;
+
+		// アナウンス
+		Actions.broadcastMessage(msgPrefix+"&2ボートレース'&6"+getName()+"&2'が始まりました！");
+		Actions.broadcastMessage(msgPrefix+"&f &a制限時間: &f"+Actions.getTimeString(timeLimitInSeconds)+"&f | &b参加者: &f"+players.size()+"&b人");
 	}
 
 	/**
@@ -180,9 +193,6 @@ public class Race{
 	public void timeout(){
 		// アナウンス
 		Actions.broadcastMessage(msgPrefix+"&2ボートレース'&6"+getName()+"&2'は時間切れです！");
-
-		// ログの終わり
-		GameID = null;
 
 		// 参加者を回す
 		for (String name : players.keySet()){
@@ -208,6 +218,75 @@ public class Race{
 		init();
 	}
 
+	/* ***** レース進行アクション ***** */
+	/**
+	 * エントリープレイヤーを初期位置に移動させる
+	 */
+	public void tpStartPos(){
+		// デフォルトのスタートセットを配列にコピー
+		Set<Location> tmp = new HashSet<Location>(startPos);
+		int size = tmp.size();
+
+		int i = 0;
+		for (String name : players.keySet()){
+			if (name == null) continue;
+			Player player = Bukkit.getPlayer(name);
+			if (player == null || !player.isOnline())
+				continue;
+
+			// ボートをスポーンさせプレイヤーを乗せる
+			Location loc = null;
+			for (Location l : tmp){
+				loc = l;
+				tmp.remove(l);
+				break;
+			}
+			if (loc == null){
+				Actions.broadcastMessage("&c参加者数が初期設定済み地点数を上回っています！続行できません！");
+				init(); return;
+			}
+			Boat bukkitBoat = loc.getWorld().spawn(loc, Boat.class);
+			player.teleport(loc);
+			bukkitBoat.setPassenger(player);
+		}
+	}
+
+	/**
+	 * ボートがゴール状態かチェックする
+	 * @param boat
+	 */
+	public void checkBoatLocation(Boat boat){
+		if(started && goalZone.isIn(boat.getLocation())){
+			if (!(boat.getPassenger() instanceof Player))
+				return;
+
+			Player player = (Player) boat.getPassenger();
+
+			// 非参加プレイヤー、ゴール済みプレイヤーを除外する
+			if (!isJoined(player) || players.get(player.getName()) != PlayerStatus.RUNNING)
+				return;
+
+			// ステータスをゴール済みに変更して通知表示
+			players.put(player.getName(), PlayerStatus.FINISHED);
+			// TODO: 経過時間を表示する
+			Actions.broadcastMessage(msgPrefix+ "プレイヤー'"+player.getName()+"'がゴールしました！");
+
+			// もし最後の人がゴールしたらゲームをそこで終了する
+			boolean cont = false;
+			for (PlayerStatus ps : players.values()){
+				if (ps == PlayerStatus.RUNNING)
+					cont = true;
+			}
+			if (!cont){
+				Actions.broadcastMessage(msgPrefix+ "&6全員がゴールしました！ゲームを終了します！");
+				init();
+			}
+		}
+	}
+
+	public void onUpdate(Boat bukkitBoat){
+		//BRBoat boat =
+	}
 
 	/* ***** 参加プレイヤー関係 ***** */
 
@@ -242,7 +321,7 @@ public class Race{
 		}
 
 		// 追加
-		players.put(player.getName(), null);
+		players.put(player.getName(), PlayerStatus.READY);
 		return true;
 	}
 
