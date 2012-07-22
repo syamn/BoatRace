@@ -15,7 +15,9 @@ import syam.BoatRace.Command.BaseCommand;
 import syam.BoatRace.Command.CreateCommand;
 import syam.BoatRace.Command.HelpCommand;
 import syam.BoatRace.Command.JoinCommand;
+import syam.BoatRace.Command.ReadyCommand;
 import syam.BoatRace.Command.SetCommand;
+import syam.BoatRace.Command.StartCommand;
 import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
 import syam.BoatRace.Race.RaceManager;
@@ -104,10 +106,13 @@ public class BoatRace extends JavaPlugin{
 		commands.add(new JoinCommand());
 
 		// Start Commands
+		commands.add(new ReadyCommand());
+		commands.add(new StartCommand());
 
 		// Admin Commands
 		commands.add(new CreateCommand());
 		commands.add(new SetCommand());
+
 	}
 
 	/**
