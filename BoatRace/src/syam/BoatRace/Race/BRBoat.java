@@ -22,9 +22,10 @@ public class BRBoat{
 	private Boat boat;
 	private boolean flight;
 	private Location lastLocation;
+	private Race race;
 
-	public BRBoat(Boat boat){
-		this.boat = boat;
+	public BRBoat(Boat bukkitBoat){
+		this.boat = bukkitBoat;
 		this.lastLocation = boat.getLocation().clone();
 	}
 

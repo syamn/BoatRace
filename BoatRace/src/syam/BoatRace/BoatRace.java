@@ -16,10 +16,12 @@ import syam.BoatRace.Command.CreateCommand;
 import syam.BoatRace.Command.HelpCommand;
 import syam.BoatRace.Command.JoinCommand;
 import syam.BoatRace.Command.ReadyCommand;
+import syam.BoatRace.Command.SelectRaceCommand;
 import syam.BoatRace.Command.SetCommand;
 import syam.BoatRace.Command.StartCommand;
 import syam.BoatRace.Listener.BRPlayerListener;
 import syam.BoatRace.Listener.BRVehicleListener;
+import syam.BoatRace.Race.BRBoat;
 import syam.BoatRace.Race.Race;
 import syam.BoatRace.Race.RaceFileManager;
 import syam.BoatRace.Race.RaceManager;
@@ -52,6 +54,7 @@ public class BoatRace extends JavaPlugin{
 	// 存在するレース <String 一意のレースID, Game>
 	public HashMap<String, Race> races = new HashMap<String, Race>();
 
+
 	// ** Instance **
 	private static BoatRace instance;
 
@@ -62,7 +65,6 @@ public class BoatRace extends JavaPlugin{
 		instance  = this;
 		PluginManager pm = getServer().getPluginManager();
 		config = new ConfigurationManager(this);
-
 		// loadconfig
 		try{
 			config.loadConfig(true);
@@ -133,6 +135,7 @@ public class BoatRace extends JavaPlugin{
 		// Admin Commands
 		commands.add(new CreateCommand());
 		commands.add(new SetCommand());
+		commands.add(new SelectRaceCommand());
 
 	}
 

@@ -7,14 +7,20 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import syam.BoatRace.BoatRace;
+import syam.BoatRace.Race.BRBoat;
+import syam.BoatRace.Race.Race;
 
 
 public class BRVehicleListener implements Listener{
@@ -31,6 +37,10 @@ public class BRVehicleListener implements Listener{
 
 	/* 登録するイベントはここから下に */
 
+	/**
+	 * 乗り物が壊れた
+	 * @param event
+	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onVehicleDestroy(final VehicleDestroyEvent event){
 		Vehicle vehicle = event.getVehicle();
@@ -46,5 +56,67 @@ public class BRVehicleListener implements Listener{
 			event.setCancelled(true);
 			vehicle.remove();
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onVehicleMove(final VehicleMoveEvent event){
+		// ボート以外は返す
+		if (!(event.getVehicle() instanceof Boat))
+			return;
+
+		Boat boat = (Boat) event.getVehicle();
+
+		// プレイヤーが乗っていないものは返す
+		if (boat.getPassenger() == null || !(boat.getPassenger() instanceof Player))
+			return;
+
+		Player player = (Player) boat.getPassenger();
+
+		// ゲームワールド以外は返す
+		if (boat.getLocation().getWorld() != Bukkit.getWorld(plugin.getConfigs().gameWorld))
+			return;
+
+		// 参加中のレースチェック
+		Race race = null;
+		for (Race r : plugin.races.values()){
+			if (r.isJoined(player))
+				race = r;
+		}
+		if (race == null) return;
+
+		race.checkBoatLocation(boat);
+
+//		Vector nowVec = boat.getVelocity();
+//		Vector newVec = new Vector(nowVec.getX() * 1.5D, nowVec.getY(), nowVec.getZ() * 1.5D);
+//		if (newVec.getX() > 4.0D || newVec.getZ() > 4.0D)
+//			return;
+//		boat.setVelocity(newVec);
+	}
+
+	//@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onVehicleUpdate(final VehicleUpdateEvent event){
+		// ボート以外は返す
+		if (!(event.getVehicle() instanceof Boat))
+			return;
+
+		Boat bBoat = (Boat) event.getVehicle();
+
+		// プレイヤーが乗っていないものは返す
+		if (bBoat.getPassenger() == null || !(bBoat.getPassenger() instanceof Player))
+			return;
+
+		Player player = (Player) bBoat.getPassenger();
+
+		Race race = null;
+		for (Race check : plugin.races.values()){
+			if (check.isJoined(player)){
+				race = check; continue;
+			}
+		}
+
+		// 乗っているプレイヤーがゲームに参加していなければ返す
+		if (race == null) return;
+
+
 	}
 }
