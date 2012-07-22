@@ -15,6 +15,7 @@ import syam.BoatRace.Command.BaseCommand;
 import syam.BoatRace.Command.HelpCommand;
 import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
+import syam.BoatRace.Race.RaceManager;
 
 
 public class BoatRace extends JavaPlugin{
@@ -36,7 +37,7 @@ public class BoatRace extends JavaPlugin{
 
 	// Private classes
 	private ConfigurationManager config;
-
+	private RaceManager rm;
 
 	// ** Variable **
 	// 存在するレース <String 一意のレースID, Game>
@@ -71,6 +72,9 @@ public class BoatRace extends JavaPlugin{
 
 		// コマンド登録
 		registerCommands();
+
+		// マネージャ
+		rm = new RaceManager(this);
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
@@ -138,6 +142,14 @@ public class BoatRace extends JavaPlugin{
 		}else{
 			return games.get(gameName);
 		}
+	}
+
+	/**
+	 * レースマネージャーを返す
+	 * @return RaceManager
+	 */
+	public RaceManager getManager(){
+		return rm;
 	}
 
 	/**
