@@ -373,6 +373,27 @@ public class Race{
 		return startPos;
 	}
 
+	/* ***** ゴールゾーン関係 ***** */
+	public void setGoal(Location pos1, Location pos2){
+		goalZone = new Cuboid(pos1, pos2);
+	}
+	public Cuboid getGoalZone(){
+		return goalZone;
+	}
+
+
+	/* ***** チェックポイント関係 ***** */
+	public void addCheckpoint(Location pos1, Location pos2){
+		checkpoints.add(new Cuboid(pos1, pos2));
+	}
+	public Set<Cuboid> getCheckpoints(){
+		return checkpoints;
+	}
+	public void setCheckpoints(Set<Cuboid> cuboids){
+		this.checkpoints.clear();
+		this.checkpoints.addAll(cuboids);
+	}
+
 	/* ***** ゲーム全般のgetterとsetter ***** */
 
 	/**

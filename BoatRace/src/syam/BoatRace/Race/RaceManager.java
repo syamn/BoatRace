@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import syam.BoatRace.BoatRace;
+import syam.BoatRace.Enum.Configables;
 
 public class RaceManager{
 	// Logger
@@ -28,7 +29,7 @@ public class RaceManager{
 	private static Map<String, Location> selectedBlock = new HashMap<String, Location>();
 
 	// ゲームマネージャモードのリスト
-	private static List<String> brManager = new ArrayList<String>();
+	private static Map<String, Configables> brManager = new HashMap<String, Configables>();
 
 	/* getter/setter */
 
@@ -45,7 +46,7 @@ public class RaceManager{
 	 * @param player 対象のプレイヤー
 	 * @return null または対象のレース
 	 */
-	public static Race getSelectedGame(Player player){
+	public static Race getSelectedRace(Player player){
 		if (player == null || !selectedRace.containsKey(player.getName())){
 			return null;
 		}else{
@@ -79,25 +80,28 @@ public class RaceManager{
 	 * @param player 対象のプレイヤー
 	 * @param state true = 管理モードにする/false = しない
 	 */
-	public static void setManager(Player player, boolean state){
-		if (state){
-			if (!brManager.contains(player.getName()))
-				brManager.add(player.getName());
-		}else{
-			if (brManager.contains(player.getName()))
+	public static void setManager(Player player, Configables conf){
+		// conf==nullならマネージモード解除
+		if (conf == null){
+			if (brManager.containsKey(player.getName())){
 				brManager.remove(player.getName());
+			}
+		}
+		//マネージモード設定
+		else{
+			brManager.put(player.getName(), conf);
 		}
 	}
 	/**
 	 * プレイヤーがマネージモードかどうか返す
 	 * @param player チェックするプレイヤー
-	 * @return trueなら管理モード、falseなら管理モードでない
+	 * @return nullなら管理モードでない
 	 */
-	public static boolean isManager(Player player){
-		if(player != null && brManager.contains(player.getName())){
-			return true;
+	public static Configables getManager(Player player){
+		if(player != null || brManager.containsKey(player.getName())){
+			return null;
 		}else{
-			return false;
+			return brManager.get(player.getName());
 		}
 	}
 }
