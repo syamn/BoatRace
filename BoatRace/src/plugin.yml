@@ -8,7 +8,7 @@ softdepend: [Vault, WorldEdit]
 ##  Original Author     ##
 author: syam
 commands:
-    flag:
+    boatrace:
       usage: /boatrace - to see the help
       aliases: [br, boat]
       description: To see the BoatRace help.
