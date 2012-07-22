@@ -21,6 +21,7 @@ import syam.BoatRace.Command.StartCommand;
 import syam.BoatRace.Listener.BRPlayerListener;
 import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
+import syam.BoatRace.Race.RaceFileManager;
 import syam.BoatRace.Race.RaceManager;
 
 
@@ -45,6 +46,7 @@ public class BoatRace extends JavaPlugin{
 	// Private classes
 	private ConfigurationManager config;
 	private RaceManager rm;
+	private RaceFileManager rfm;
 
 	// ** Variable **
 	// 存在するレース <String 一意のレースID, Game>
@@ -83,6 +85,10 @@ public class BoatRace extends JavaPlugin{
 
 		// マネージャ
 		rm = new RaceManager(this);
+		rfm = new RaceFileManager(this);
+
+		// レースゲーム読み込み
+		rfm.loadGames();
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
@@ -94,6 +100,18 @@ public class BoatRace extends JavaPlugin{
 	 */
 	public void onDisable(){
 		// 開始中のゲームをすべて終わらせる
+		for (Race race : races.values()){
+			if (race.isStarting()){
+				race.cancelTimerTask();
+				race.timeout();
+				//race.log("Race game finished because disabling plugin..");
+			}
+		}
+
+		// ゲームデータ保存
+		if (rfm != null){
+			rfm.saveGames();
+		}
 
 		// メッセージ表示
 		PluginDescriptionFile pdfFile=this.getDescription();
@@ -168,6 +186,14 @@ public class BoatRace extends JavaPlugin{
 	 */
 	public RaceManager getManager(){
 		return rm;
+	}
+
+	/**
+	 * レースファイルマネージャーを返す
+	 * @return RaceFileManager
+	 */
+	public RaceFileManager getFileManager(){
+		return rfm;
 	}
 
 	/**

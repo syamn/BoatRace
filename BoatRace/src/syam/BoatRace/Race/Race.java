@@ -29,8 +29,8 @@ public class Race{
 	private String fileName; // ゲームデータのファイル名
 	private String gameName; // ゲーム名
 	private int playerLimit = 16; // 最大プレイヤー数
-	private int gameTimeInSeconds = 600; // 1ゲームの制限時間
-	private int remainSec = gameTimeInSeconds; // 1ゲームの制限時間
+	private int timeLimitInSeconds = 600; // 1ゲームの制限時間
+	private int remainSec = timeLimitInSeconds; // 1ゲームの制限時間
 	private int timerThreadID = -1; // タイマータスクのID
 	private int starttimerInSec = 10;
 	private int starttimerThreadID = -1;
@@ -77,7 +77,7 @@ public class Race{
 		// タイマー関係初期化
 		//cancelTimerTask();
 		timerThreadID = -1;
-		remainSec = gameTimeInSeconds;
+		remainSec = timeLimitInSeconds;
 
 		// フラグ初期化
 		started = false;
@@ -148,7 +148,7 @@ public class Race{
 
 		// アナウンス
 		Actions.broadcastMessage(msgPrefix+"&2ボートレース'&6"+getName()+"&2'が始まりました！");
-		Actions.broadcastMessage(msgPrefix+"&f &a制限時間: &f"+Actions.getTimeString(gameTimeInSeconds)+"&f | &b参加者: &f"+players.size()+"&b人");
+		Actions.broadcastMessage(msgPrefix+"&f &a制限時間: &f"+Actions.getTimeString(timeLimitInSeconds)+"&f | &b参加者: &f"+players.size()+"&b人");
 
 		// 参加者を回す
 		for (String name : players.keySet()){
@@ -381,6 +381,10 @@ public class Race{
 	public Set<Location> getStartPos(){
 		return startPos;
 	}
+	public void setStartPos(Set<Location> set){
+		startPos.clear();
+		startPos.addAll(set);
+	}
 
 	/* ***** ゴールゾーン関係 ***** */
 	public void setGoal(Location pos1, Location pos2){
@@ -389,7 +393,9 @@ public class Race{
 	public Cuboid getGoalZone(){
 		return goalZone;
 	}
-
+	public void setGoal(Cuboid region){
+		goalZone = region;
+	}
 
 	/* ***** チェックポイント関係 ***** */
 	public void addCheckpoint(Location pos1, Location pos2){
@@ -448,20 +454,20 @@ public class Race{
 	 * このゲームの制限時間(秒)を設定する
 	 * @param sec 制限時間(秒)
 	 */
-	public void setGameTime(int sec){
+	public void setTimeLimit(int sec){
 		// もしゲーム開始中なら何もしない
 		if (!started){
 			cancelTimerTask(); // しなくてもいいかな…？
-			gameTimeInSeconds = sec;
-			remainSec = gameTimeInSeconds;
+			timeLimitInSeconds = sec;
+			remainSec = timeLimitInSeconds;
 		}
 	}
 	/**
 	 * このゲームの制限時間(秒)を返す
 	 * @return
 	 */
-	public int getGameTime(){
-		return gameTimeInSeconds;
+	public int getTimeLimit(){
+		return timeLimitInSeconds;
 	}
 
 	/**
