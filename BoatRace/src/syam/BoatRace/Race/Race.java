@@ -64,7 +64,7 @@ public class Race{
 		this.fileName = this.gameName + ".yml";
 
 		// ゲームをメインクラスに登録
-		plugin.games.put(this.gameName, this);
+		plugin.races.put(this.gameName, this);
 	}
 
 	/**
@@ -279,6 +279,7 @@ public class Race{
 			player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
 	}
 
+
 	/* ***** タイマー関係 ***** */
 
 	public void start_timer(final CommandSender sender){
@@ -363,6 +364,14 @@ public class Race{
 		return remainSec;
 	}
 
+	/* ***** 開始位置 ***** */
+	/**
+	 * 開始位置のハッシュセットを取得する
+	 * @return Location Set
+	 */
+	public Set<Location> getStartPos(){
+		return startPos;
+	}
 
 	/* ***** ゲーム全般のgetterとsetter ***** */
 

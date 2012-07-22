@@ -12,7 +12,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import syam.BoatRace.Command.BaseCommand;
+import syam.BoatRace.Command.CreateCommand;
 import syam.BoatRace.Command.HelpCommand;
+import syam.BoatRace.Command.JoinCommand;
 import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
 import syam.BoatRace.Race.RaceManager;
@@ -41,7 +43,7 @@ public class BoatRace extends JavaPlugin{
 
 	// ** Variable **
 	// 存在するレース <String 一意のレースID, Game>
-	public HashMap<String, Race> games = new HashMap<String, Race>();
+	public HashMap<String, Race> races = new HashMap<String, Race>();
 
 	// ** Instance **
 	private static BoatRace instance;
@@ -97,7 +99,13 @@ public class BoatRace extends JavaPlugin{
 	 */
 	private void registerCommands(){
 		// Intro Commands
+		commands.add(new HelpCommand());
+		commands.add(new JoinCommand());
 
+		// Start Commands
+
+		// Admin Commands
+		commands.add(new CreateCommand());
 	}
 
 	/**
@@ -105,7 +113,7 @@ public class BoatRace extends JavaPlugin{
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]){
-		if (cmd.getName().equalsIgnoreCase("flag")){
+		if (cmd.getName().equalsIgnoreCase("boat")){
 			if(args.length == 0){
 				// 引数ゼロはヘルプ表示
 				args = new String[]{"help"};
@@ -137,10 +145,10 @@ public class BoatRace extends JavaPlugin{
 	 * @return Game
 	 */
 	public Race getGame(String gameName){
-		if (!games.containsKey(gameName)){
+		if (!races.containsKey(gameName)){
 			return null;
 		}else{
-			return games.get(gameName);
+			return races.get(gameName);
 		}
 	}
 
