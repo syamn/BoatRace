@@ -363,10 +363,19 @@ public class Race{
 	}
 
 	/* ***** 開始位置 ***** */
-	/**
-	 * 開始位置のハッシュセットを取得する
-	 * @return Location Set
-	 */
+	public void addStartPos(Location loc){
+		startPos.add(loc);
+	}
+	public void removeStartPos(Location loc){
+		if (startPos.contains(loc))
+			startPos.remove(loc);
+	}
+	public boolean isStartPos(Location loc){
+		if (startPos.contains(loc))
+			return true;
+		else
+			return false;
+	}
 	public Set<Location> getStartPos(){
 		return startPos;
 	}

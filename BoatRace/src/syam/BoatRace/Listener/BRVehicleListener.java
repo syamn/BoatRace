@@ -30,6 +30,7 @@ public class BRVehicleListener implements Listener{
 	}
 
 	/* 登録するイベントはここから下に */
+
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onVehicleDestroy(final VehicleDestroyEvent event){
 		Vehicle vehicle = event.getVehicle();

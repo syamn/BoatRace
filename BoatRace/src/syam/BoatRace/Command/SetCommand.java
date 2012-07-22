@@ -26,10 +26,11 @@ public class SetCommand extends BaseCommand {
 			if (RaceManager.getManager(player) != null){
 				RaceManager.setManager(player, null);
 				Actions.message(null, player, "&aマネージモードを解除しました！");
-				return true;
+			}else{
+				Actions.message(null, player, "&c設定項目を指定してください！");
+				sendAvailableConf();
 			}
-			Actions.message(null, player, "&c設定項目を指定してください！");
-			sendAvailableConf();
+			return true;
 		}
 
 

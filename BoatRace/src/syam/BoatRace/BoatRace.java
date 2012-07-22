@@ -18,6 +18,7 @@ import syam.BoatRace.Command.JoinCommand;
 import syam.BoatRace.Command.ReadyCommand;
 import syam.BoatRace.Command.SetCommand;
 import syam.BoatRace.Command.StartCommand;
+import syam.BoatRace.Listener.BRPlayerListener;
 import syam.BoatRace.Listener.BRVehicleListener;
 import syam.BoatRace.Race.Race;
 import syam.BoatRace.Race.RaceManager;
@@ -36,6 +37,7 @@ public class BoatRace extends JavaPlugin{
 
 	// ** Listeners **
 	private final BRVehicleListener vehicleListener = new BRVehicleListener(this);
+	private final BRPlayerListener playerListener = new BRPlayerListener(this);
 
 	// ** Commands **
 	public static List<BaseCommand> commands = new ArrayList<BaseCommand>();
@@ -74,6 +76,7 @@ public class BoatRace extends JavaPlugin{
 
 		// Regist Listeners
 		pm.registerEvents(vehicleListener, this);
+		pm.registerEvents(playerListener, this);
 
 		// コマンド登録
 		registerCommands();
@@ -120,7 +123,7 @@ public class BoatRace extends JavaPlugin{
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]){
-		if (cmd.getName().equalsIgnoreCase("boat")){
+		if (cmd.getName().equalsIgnoreCase("boatrace")){
 			if(args.length == 0){
 				// 引数ゼロはヘルプ表示
 				args = new String[]{"help"};

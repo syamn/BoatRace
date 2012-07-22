@@ -2,7 +2,7 @@
 name: BoatRace
 version: 0.1
 main: syam.BoatRace.BoatRace
-description: FlagMatch Gaming Plugin for SakuraServer
+description: BoatRace Gaming Plugin for SakuraServer
 website: http://sakura-server.net/
 softdepend: [Vault, WorldEdit]
 ##  Original Author     ##
@@ -21,7 +21,7 @@ permissions:
         description: Allow all of administer commands
     boat.admin.sign:
         default: op
-        description: Allow place FlagGame sign
+        description: Allow place BoatRace sign
     boat.admin.reload:
         default: op
         description: Allow reload configuration
