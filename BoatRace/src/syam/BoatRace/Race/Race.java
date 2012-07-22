@@ -290,13 +290,13 @@ public class Race{
 			return;
 		}
 
-		Actions.broadcastMessage(msgPrefix+"&6まもなくゲーム'"+getName()+"'が始まります！");
+		Actions.broadcastMessage(msgPrefix+"&6まもなくレースゲーム'"+getName()+"'が始まります！");
 
 		// タイマータスク
 		starttimerThreadID = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
 			public void run(){
 				/* 1秒ごとに呼ばれる */
-				message(msgPrefix+ "&aあと" +starttimerInSec+ "秒でこのゲームが始まります！");
+				message(msgPrefix+ "&aあと" +starttimerInSec+ "秒でこのレースが始まります！");
 
 				// 残り時間がゼロになった
 				if (starttimerInSec <= 0){
@@ -342,7 +342,6 @@ public class Race{
 			}
 		}, 0L, 20L);
 	}
-
 	/**
 	 * タイマータスクが稼働中の場合停止する
 	 */
@@ -355,7 +354,6 @@ public class Race{
 			plugin.getServer().getScheduler().cancelTask(timerThreadID);
 		}
 	}
-
 	/**
 	 * このゲームの残り時間(秒)を取得する
 	 * @return 残り時間(秒)
