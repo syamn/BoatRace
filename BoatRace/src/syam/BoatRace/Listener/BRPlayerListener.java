@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import syam.BoatRace.BoatRace;
@@ -33,6 +34,10 @@ public class BRPlayerListener implements Listener{
 
 	/* 登録するイベントはここから下に */
 
+	/**
+	 * 管理モードでブロックをクリックした
+	 * @param event
+	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPlayerInteractAsManager(final PlayerInteractEvent event){
 		Player player = event.getPlayer();
@@ -77,6 +82,46 @@ public class BRPlayerListener implements Listener{
 						Actions.message(null, player, "&c現在選択中の設定モードでは選択ツールを使用できません！");
 						return;
 				}// End switch
+			}
+		}
+	}
+
+	/**
+	 * コマンドを使おうとした
+	 * @param event
+	 */
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event){
+		Player player = event.getPlayer();
+		// ワールドチェック
+		if (player.getWorld() != Bukkit.getWorld(plugin.getConfigs().gameWorld))
+			return;
+
+		String cmdMsg = event.getMessage().trim();
+		String cmds[] = cmdMsg.split(" ");
+		String cmd = null;
+
+		if (cmds.length > 1){
+			cmd = cmds[0].trim();
+		}else{ // cmds.length == 1
+			cmd = cmdMsg;
+		}
+
+		// 存在するレースを回す
+		for (Race race : plugin.races.values()){
+			if (!race.isReady() && !race.isStarting())
+				return;
+
+			// そのレースに参加中
+			if (race.isJoined(player)){
+				for (String s : plugin.getConfigs().disableCommands){
+					if (s.trim().equalsIgnoreCase(cmd)){
+						// コマンド実行キャンセル
+						event.setCancelled(true);
+						Actions.message(null, player, msgPrefix+"このコマンドはレース中に使えません！");
+						return;
+					}
+				}
 			}
 		}
 	}
