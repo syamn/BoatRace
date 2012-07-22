@@ -25,7 +25,7 @@ public class SetCommand extends BaseCommand {
 		if (args.size() <= 0){
 			if (RaceManager.getManager(player) != null){
 				RaceManager.setManager(player, null);
-				Actions.message(null, player, "&aマネージモードを解除しました！");
+				Actions.message(null, player, "&a管理モードを解除しました！");
 			}else{
 				Actions.message(null, player, "&c設定項目を指定してください！");
 				sendAvailableConf();
@@ -108,7 +108,7 @@ public class SetCommand extends BaseCommand {
 		// 設定
 		race.setGoal(block1.getLocation(), block2.getLocation());
 
-		Actions.message(null, player, "&cゴールエリアを設定しました！");
+		Actions.message(null, player, "&aゴールエリアを設定しました！");
 		return true;
 	}
 
@@ -136,7 +136,7 @@ public class SetCommand extends BaseCommand {
 		// 設定
 		race.addCheckpoint(block1.getLocation(), block2.getLocation());
 
-		Actions.message(null, player, "&cチェックポイントを設定しました！");
+		Actions.message(null, player, "&aチェックポイントを設定しました！");
 		return true;
 	}
 

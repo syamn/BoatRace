@@ -83,9 +83,8 @@ public class RaceManager{
 	public static void setManager(Player player, Configables conf){
 		// conf==nullならマネージモード解除
 		if (conf == null){
-			if (brManager.containsKey(player.getName())){
+			if (brManager.containsKey(player.getName()))
 				brManager.remove(player.getName());
-			}
 		}
 		//マネージモード設定
 		else{
@@ -98,7 +97,7 @@ public class RaceManager{
 	 * @return nullなら管理モードでない
 	 */
 	public static Configables getManager(Player player){
-		if(player != null || brManager.containsKey(player.getName())){
+		if(player == null || !brManager.containsKey(player.getName())){
 			return null;
 		}else{
 			return brManager.get(player.getName());

@@ -128,12 +128,14 @@ public class Race{
 		// 人数チェック
 		if (players.size() < 1){
 			Actions.message(sender, null, "&cプレイヤーが参加していません！");
+			init();
 			return;
 		}
 
 		// スタート地点の再チェック
 		if (players.size() > startPos.size()){
 			Actions.message(sender, null, "&c参加プレイヤーがスタート地点設定数より多いので開始できません！");
+			init();
 			return;
 		}
 
