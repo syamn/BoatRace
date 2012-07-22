@@ -1,15 +1,25 @@
 package syam.BoatRace.Enum;
 
 public enum Configables {
-	START(ConfigType.MANAGER), // スタート地点
-	GOAL(ConfigType.AREA), // ゴールエリア
-	CHECKPOINT(ConfigType.AREA), // チェックポイントエリア
+	START("スタート地点", ConfigType.MANAGER), // スタート地点
+	GOAL("ゴールエリア",ConfigType.AREA), // ゴールエリア
+	CHECKPOINT("チェックポイント",ConfigType.AREA), // チェックポイントエリア
 	;
 
+	private String configName;
 	private ConfigType configType;
 
-	Configables(ConfigType ctype){
+	Configables(String configName, ConfigType ctype){
+		this.configName = configName;
 		this.configType = ctype;
+	}
+
+	/**
+	 * 設定名を返す
+	 * @return
+	 */
+	public String getConfigName(){
+		return configName;
 	}
 
 	/**

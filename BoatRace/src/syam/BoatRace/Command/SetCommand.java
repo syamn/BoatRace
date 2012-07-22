@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import syam.BoatRace.BoatRace;
+import syam.BoatRace.Enum.ConfigType;
 import syam.BoatRace.Enum.Configables;
 import syam.BoatRace.Race.Race;
 import syam.BoatRace.Race.RaceManager;
@@ -24,8 +25,7 @@ public class SetCommand extends BaseCommand {
 		// race set のみ (サブ引数なし)
 		if (args.size() <= 0){
 			if (RaceManager.getManager(player) != null){
-				RaceManager.setManager(player, null);
-				Actions.message(null, player, "&a管理モードを解除しました！");
+				removeMangerMode();
 			}else{
 				Actions.message(null, player, "&c設定項目を指定してください！");
 				sendAvailableConf();
@@ -55,6 +55,9 @@ public class SetCommand extends BaseCommand {
 			return true;
 		}
 
+		if (conf.getConfigType() != ConfigType.MANAGER)
+			removeMangerMode();
+
 		switch (conf){
 			case START:
 				return setStart(race);
@@ -74,8 +77,7 @@ public class SetCommand extends BaseCommand {
 	 */
 	private boolean setStart(Race race){
 		if (RaceManager.getManager(player) != null){
-			RaceManager.setManager(player, null);
-			Actions.message(null, player, "&a管理モードを終了しました。");
+			removeMangerMode();
 		}else{
 			RaceManager.setManager(player, Configables.START);
 			String tool = Material.getMaterial(plugin.getConfigs().toolID).name();
@@ -83,7 +85,6 @@ public class SetCommand extends BaseCommand {
 		}
 		return true;
 	}
-
 	/**
 	 * ゴール地点を設定する
 	 * @param race 設定対象のレース
@@ -111,7 +112,6 @@ public class SetCommand extends BaseCommand {
 		Actions.message(null, player, "&aゴールエリアを設定しました！");
 		return true;
 	}
-
 	/**
 	 * チェックポイントを設定する
 	 * @param race 設定対象のレース
@@ -138,6 +138,17 @@ public class SetCommand extends BaseCommand {
 
 		Actions.message(null, player, "&aチェックポイントを設定しました！");
 		return true;
+	}
+
+	/**
+	 * 管理モードになっていれば解除する
+	 */
+	private void removeMangerMode(){
+		Configables conf = RaceManager.getManager(player);
+		if (conf != null){
+			RaceManager.setManager(player, null);
+			Actions.message(null, player, "&a"+conf.getConfigName()+"管理モードを解除しました！");
+		}
 	}
 
 	/**
